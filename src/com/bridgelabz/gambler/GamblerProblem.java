@@ -42,12 +42,61 @@ public class GamblerProblem
         System.out.println("The gambler resigns for the day after he has $"
                 + available_amount + " with him.");
     }
+    //Use case 4
+    public void toCheckWinLoseAmount()
+    {
+        // Assume 100 bets played every day
+        int NO_OF_BETS = 100;
+        //margin = 50%
+        double upper_margin = 0.5*INITIAL_STAKE;
+        double lower_margin = -0.5*INITIAL_STAKE;
+        double total_amount_won_lost = 0;
+
+        // Game played for 20 days
+        for (int i=0;i<20;i++)
+        {
+            double daily_amount_won_lost = 0;
+            int bets_played = 0;
+
+            // Everyday game stops at 50% margin
+            while ((daily_amount_won_lost < upper_margin) && (daily_amount_won_lost > lower_margin)
+                    && (bets_played < NO_OF_BETS)){
+                double random_num = Math.random();
+                bets_played++;
+
+                if (random_num > 0.5)
+                {
+                    daily_amount_won_lost += BET_AMT;
+                }
+                else if (random_num <= 0.5)
+                {
+                    daily_amount_won_lost -= BET_AMT;
+                }
+            }
+            total_amount_won_lost += daily_amount_won_lost;
+        }
+
+        // Print total amount won or last in 20 days
+        if (total_amount_won_lost > 0)
+        {
+            System.out.println("The total amount won in 20 days = "+ total_amount_won_lost);
+        }
+        else if (total_amount_won_lost == 0)
+        {
+            System.out.println("There is no net gain in last 20 days");
+        }
+        else if (total_amount_won_lost < 0)
+        {
+            System.out.println("The total amount lost in last 20 days = "+ Math.abs(total_amount_won_lost));
+        }
+    }
 
     public static void main(String[] args)
     {
         GamblerProblem gamblerProblem = new GamblerProblem();
         gamblerProblem.checkWinLose();
         gamblerProblem.resignsDay();
+        gamblerProblem.toCheckWinLoseAmount();
     }
 
 }
