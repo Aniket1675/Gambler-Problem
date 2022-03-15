@@ -90,6 +90,53 @@ public class GamblerProblem
             System.out.println("The total amount lost in last 20 days = "+ Math.abs(total_amount_won_lost));
         }
     }
+    //Use case 5
+    public void totalAmountPerDay()
+    {
+        // Assume 100 bets played every day
+        int NO_OF_BETS = 100;
+        //margin = 50%
+        double upper_margin = 0.5*INITIAL_STAKE;
+        double lower_margin = -0.5*INITIAL_STAKE;
+        double total_amount_won_lost = 0;
+        // Game played for a month
+        for (int i=1;i<31;i++)
+        {
+            double daily_amount_won_lost = 0;
+            int bets_played = 0;
+
+            // Everyday game stops at 50% margin or before 100 bets, whichever comes earlier
+            while ((daily_amount_won_lost < upper_margin) && (daily_amount_won_lost > lower_margin)
+                    && (bets_played < NO_OF_BETS))
+            {
+                double random_num = Math.random();
+                bets_played++;
+                //check whether he wins or loses the bet
+                if (random_num > 0.5)
+                {
+                    daily_amount_won_lost += BET_AMT;
+                }
+                else if (random_num <= 0.5)
+                {
+                    daily_amount_won_lost -= BET_AMT;
+                }
+            }
+
+            // Print total amount won or last on this day
+            if (daily_amount_won_lost > 0)
+            {
+                System.out.println("The amount won on day "+ i + " = $"+daily_amount_won_lost);
+            }
+            else if (daily_amount_won_lost == 0)
+            {
+                System.out.println("There is no net gain or loss on day "+ i);
+            }
+            else if (daily_amount_won_lost < 0)
+            {
+                System.out.println("The amount lost on day "+ i + " = $" + Math.abs(daily_amount_won_lost));
+            }
+        }
+    }
 
     public static void main(String[] args)
     {
@@ -97,6 +144,7 @@ public class GamblerProblem
         gamblerProblem.checkWinLose();
         gamblerProblem.resignsDay();
         gamblerProblem.toCheckWinLoseAmount();
+        gamblerProblem.totalAmountPerDay();
     }
 
 }
