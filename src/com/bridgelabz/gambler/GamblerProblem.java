@@ -137,6 +137,59 @@ public class GamblerProblem
             }
         }
     }
+    //Use case 6: Luckiest and unluckiest day
+
+    public void toCheckLuckiestUnluckiestDay()
+    {
+        // Assume 100 bets played every day
+        int NO_OF_BETS = 100;
+        //margin = 50%
+        double upper_margin = 0.5*INITIAL_STAKE;
+        double lower_margin = -0.5*INITIAL_STAKE;
+        int luck_day = 0;
+        double luck_day_amt = 0;
+        int unluck_day = 0;
+        double unluck_day_amt = 0;
+        // Game played for a month
+        for (int i=1;i<31;i++)
+        {
+            double daily_amount_won_lost = 0;
+            int bets_played = 0;
+
+            // Everyday game stops at 50% margin or before 100 bets, whichever comes earlier
+            while ((daily_amount_won_lost < upper_margin) && ( daily_amount_won_lost > lower_margin)
+                    && (bets_played < NO_OF_BETS))
+            {
+                double random_num = Math.random();
+                bets_played++;
+                //check whether he wins or loses the bet
+                if (random_num>0.5)
+                {
+                    daily_amount_won_lost += BET_AMT;
+                }
+                else if (random_num<=0.5)
+                {
+                    daily_amount_won_lost -= BET_AMT;
+                }
+            }
+            // Compare for the lucky and unlucky day
+            if (luck_day_amt < daily_amount_won_lost)
+            {
+                luck_day_amt = daily_amount_won_lost;
+                luck_day = i;
+            }
+            if (unluck_day_amt > daily_amount_won_lost)
+            {
+                unluck_day_amt = daily_amount_won_lost;
+                unluck_day = i;
+            }
+        }
+        // Print luckiest and unluckiest days and the amounts won or last on that day
+        System.out.println("The luckiest day for gambler is "+ luck_day +
+                "th day, on which he won $"+luck_day_amt);
+        System.out.println(" And the unluckiest day for gambler is "+ unluck_day +
+                "th day, on which he lost $"+Math.abs(unluck_day_amt));
+    }
 
     public static void main(String[] args)
     {
@@ -145,6 +198,7 @@ public class GamblerProblem
         gamblerProblem.resignsDay();
         gamblerProblem.toCheckWinLoseAmount();
         gamblerProblem.totalAmountPerDay();
+        gamblerProblem.toCheckLuckiestUnluckiestDay();
     }
 
 }
