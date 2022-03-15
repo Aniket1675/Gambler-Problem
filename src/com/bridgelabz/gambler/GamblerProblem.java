@@ -191,6 +191,71 @@ public class GamblerProblem
                 "th day, on which he lost $"+Math.abs(unluck_day_amt));
     }
 
+    //Use case 7 : if wins should he play or not
+
+    public void checkPlayOrNot()
+    {
+        // Assume 100 bets played every day
+        int NO_OF_BETS = 100;
+        //margin = 50%
+        double upper_margin = 0.5*INITIAL_STAKE;
+        double lower_margin = -0.5*INITIAL_STAKE;
+        double total_amount_won_lost = 0;
+
+        // Game played for 30 days
+        for (int i=1;i<31;i++)
+        {
+            double daily_amount_won_lost = 0;
+            int bets_played = 0;
+
+            // Everyday game stops at 50% margin or if number of bets exceed 100
+            while ((daily_amount_won_lost < upper_margin) && (daily_amount_won_lost > lower_margin)
+                    && (bets_played < NO_OF_BETS))
+            {
+                double random_num = Math.random();
+                bets_played++;
+
+                if (random_num > 0.5)
+                {
+                    daily_amount_won_lost += BET_AMT;
+                }
+                else if (random_num <= 0.5)
+                {
+                    daily_amount_won_lost -= BET_AMT;
+                }
+            }
+            // total amount won or lost in a month
+            total_amount_won_lost += daily_amount_won_lost;
+        }
+
+        // If he has won in last month
+        if (total_amount_won_lost > 0)
+        {
+            // Whether he should play or not
+            double random_num1 = Math.random();
+
+            // He should play further
+            if (random_num1 > 0.5)
+            {
+                System.out.println("The gambler has won $"+ total_amount_won_lost+
+                        " last month and he should play in this month too");
+            }
+            // He should not play further
+            else if (random_num1 <= 0.5)
+            {
+                System.out.println("The gambler has won $"+ total_amount_won_lost+
+                        " last month and he should stop gambling now.");
+            }
+        }
+        // If he has lost in last month
+        else if (total_amount_won_lost <= 0)
+        {
+            System.out.println("The gambler has lost in last month $"
+                    + Math.abs(total_amount_won_lost)+
+                    " and to avoid further losses he should stop playing now.");
+        }
+    }
+
     public static void main(String[] args)
     {
         GamblerProblem gamblerProblem = new GamblerProblem();
@@ -199,6 +264,7 @@ public class GamblerProblem
         gamblerProblem.toCheckWinLoseAmount();
         gamblerProblem.totalAmountPerDay();
         gamblerProblem.toCheckLuckiestUnluckiestDay();
+        gamblerProblem.checkPlayOrNot();
     }
 
 }
